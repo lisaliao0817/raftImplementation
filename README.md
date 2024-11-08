@@ -81,24 +81,14 @@ Node 8000 elected as leader for term 1
 
 # Terminal 2
 $ python raft.py 8001
-Node 8001 updated value to: some_value
 
 # Terminal 1
 > set some_value
 Leader 8000 setting value to: some_value
+
+# Terminal 2
+Node 8001 updated value to: some_value
 ```
 
-## Error Handling
-
-- Graceful shutdown with Ctrl+C
-- Automatic recovery from leader failures
-- Basic network error handling
-
-## Contributing
-
-Feel free to improve this implementation by addressing any of the limitations mentioned above or adding new features like:
-- Persistent storage
-- Full log replication
-- Configuration changes
-- Network partition handling
-- Log compaction
+## AI Usage
+I used ChatGPT4o first but its implementation was buggy and it could not really fix its own bugs so I used claude-3.5-sonnet that was embedded in Cursor, an IDE I just started using. It produced the code and also improved it based on the feedback I gave. 
