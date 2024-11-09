@@ -64,12 +64,35 @@ The core implementation is in the `RaftNode` class (lines 9-142), which handles:
 
 ## Limitations
 
-1. No persistent storage
-2. Simple state model (single string value)
-3. Basic network partition handling
-4. No log replication
-5. No dynamic membership changes
-6. Runs only on localhost
+1. **No persistent storage**
+   - All state is held in memory and lost when nodes restart
+   - In a production system, the log and state should be written to disk
+   - Critical for recovering from crashes and maintaining data durability
+
+2. **Simple state model (single string value)**
+   - Current implementation only maintains a single string value
+   - Real distributed systems typically need to handle complex data structures
+   - No support for multiple concurrent operations or transactions
+
+3. **Basic network partition handling**
+   - Network failures are handled through simple timeouts
+   - No sophisticated partition detection or resolution
+   - Split-brain scenarios (where multiple leaders could emerge) are possible
+
+4. **No log replication**
+   - Only replicates current state, not the sequence of changes
+   - Missing key Raft feature of maintaining ordered operation log
+   - Cannot replay history or handle inconsistencies properly
+
+5. **No dynamic membership changes**
+   - Cluster membership is static and defined at startup
+   - No way to add or remove nodes while the system is running
+   - Configuration changes require full system restart
+
+6. **Runs only on localhost**
+   - Limited to running all nodes on a single machine
+   - Uses simple UDP communication on localhost
+   - Not suitable for real distributed deployment across network
 
 ## Example Session
 
@@ -77,12 +100,12 @@ The core implementation is in the `RaftNode` class (lines 9-142), which handles:
 # Terminal 1
 $ python raft.py 8000
 Node 8000 starting election for term 1
-Node 8000 elected as leader for term 1
 
 # Terminal 2
 $ python raft.py 8001
 
 # Terminal 1
+Node 8000 elected as leader for term 1
 > set some_value
 Leader 8000 setting value to: some_value
 

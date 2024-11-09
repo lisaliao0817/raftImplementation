@@ -6,6 +6,7 @@ import json
 import sys
 import signal
 
+
 class RaftNode:
     def __init__(self, node_id, peers):
         self.id = node_id
@@ -16,18 +17,18 @@ class RaftNode:
         self.state = "follower"
         self.leader_id = None
         self.current_value = ""  # The current state/value
-        
+
         # Timing constants
         self.HEARTBEAT_TIMEOUT = 1.0
         self.ELECTION_TIMEOUT_BASE = 2.0
-        
+
         # Reset election timeout
         self.reset_election_timeout()
-        
+
         # Setup networking
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.server_socket.bind(("localhost", self.id))
-        
+
         # Start main thread
         self.running = True
         threading.Thread(target=self.run).start()
@@ -165,6 +166,7 @@ def run_node(node_id, peer_ids):
                     print(f"Not the leader. Current leader is node {node.leader_id}")
         except EOFError:
             break
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
